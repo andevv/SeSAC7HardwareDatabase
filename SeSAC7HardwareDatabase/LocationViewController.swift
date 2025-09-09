@@ -17,7 +17,7 @@ class LocationViewController: UIViewController {
     let button = UIButton()
     
     //2. 위치 매니저 생성: 위치에 대한 대부분을 담당
-    let locationManager = CLLocationManager()
+    lazy var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +109,7 @@ extension LocationViewController: CLLocationManagerDelegate {
         mapView.setRegion(region, animated: true)
         
         //start 메서드를 썼으면, 더 이상 위치를 얻어올 필요가 없는 시점에서는 stop을 해줘야 함
-        locationManager.startUpdatingLocation()
+        locationManager.stopUpdatingLocation()
     }
     
     //didFailWithError: 위치 조회에 실패한 경우 (권한 없을 때)
