@@ -61,20 +61,20 @@ final class OnboardingViewController: UIPageViewController {
         
         let a = NSTextAlignment.center
         
-        switch a {
-        case .left:
-            <#code#>
-        case .center:
-            <#code#>
-        case .right:
-            <#code#>
-        case .justified:
-            <#code#>
-        case .natural:
-            <#code#>
-        @unknown default:
-            <#fatalError()#>
-        }
+//        switch a {
+//        case .left:
+//            <#code#>
+//        case .center:
+//            <#code#>
+//        case .right:
+//            <#code#>
+//        case .justified:
+//            <#code#>
+//        case .natural:
+//            <#code#>
+//        @unknown default:
+//            <#fatalError()#>
+//        }
         
         getRandom()
         
