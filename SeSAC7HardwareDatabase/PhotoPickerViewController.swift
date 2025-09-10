@@ -45,9 +45,20 @@ class PhotoPickerViewController: UIViewController {
 extension PhotoPickerViewController: PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        print(#function)
+        print(#function, results)
         
         picker.dismiss(animated: true)
+        
+        let itemProvider = results.first?.itemProvider
+        
+        if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
+            
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                DispatchQueue.main.async {
+                    self.imageView.image = image as? UIImage
+                }
+            }
+        }
     }
     
     
