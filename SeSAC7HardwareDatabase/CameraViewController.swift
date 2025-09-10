@@ -19,6 +19,8 @@ import SnapKit
  -> iOS13까지 UIImagePickerController가 담당 (시스템UI -> 갤러리에서 여러장 선택하는 것 불가능)
  -> iOS14부터 PHPicker(out of process)가 등장 (2, 3번 기능 담당)
  
+ Out of Process: 앱에서 접근할 수 없는 형태 -> 접근 권한 자체가 필요 없음
+ 
  */
 
 class CameraViewController: UIViewController {
