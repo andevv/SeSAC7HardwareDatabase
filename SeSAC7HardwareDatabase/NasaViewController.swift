@@ -33,6 +33,8 @@ class NasaViewController: UIViewController {
     var buffer = Data()
     let imageView = UIImageView()
     
+    var session: URLSession!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -45,9 +47,22 @@ class NasaViewController: UIViewController {
         callRequestDelegate()
     }
     
+    //화면이 사라질 때, 화면 전환할 때, 앱을 종료하거나 뷰가 사라질 때
+    //네트워크와 관련된 리소스 정리가 필요
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        //다운로드 중인 리소스 무시, 통신도 취소
+        session.invalidateAndCancel()
+        
+        //다운로드 완료까지 유지, 완료 후 리소스 정리
+        //session.finishTasksAndInvalidate()
+    }
+    
     func callRequestDelegate() {
         print(#function)
-        URLSession(configuration: .default, delegate: self, delegateQueue: .main).dataTask(with: Nasa.photo).resume()
+        session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+        session.dataTask(with: Nasa.photo).resume()
     }
     
     func callRequest() {
