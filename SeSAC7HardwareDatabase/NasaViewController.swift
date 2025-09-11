@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 enum Nasa: String, CaseIterable {
     
@@ -20,17 +21,26 @@ enum Nasa: String, CaseIterable {
     case seven = "2305/pia23122c-16.jpg"
     case eight = "2308/SunMonster_Wenz_960.jpg"
     case nine = "2307/AldrinVisor_Apollo11_4096.jpg"
-     
+    
     static var photo: URL {
         return URL(string: Nasa.baseURL + Nasa.allCases.randomElement()!.rawValue)!
     }
 }
 
 class NasaViewController: UIViewController {
-
+    
+    var total: Double = 0 //총 이미지의 크기
+    var buffer = Data()
+    let imageView = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        view.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.size.equalTo(200)
+            make.center.equalTo(view)
+        }
         
         callRequestDelegate()
     }
@@ -55,17 +65,38 @@ extension NasaViewController: URLSessionDataDelegate {
     //1. 서버에서 최초로 응답 받은 경우에 호출 (상태코드에 대한 확인)
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         print("1111")
-        completionHandler(.allow)
+        dump(response)
+        
+        if let response = response as? HTTPURLResponse,
+           response.statusCode == 200 {
+            
+            //총 데이터 크기 얻기
+            let contentLength = response.value(forHTTPHeaderField: "Content-Length")!
+            print("Content-Length", contentLength)
+            total = Double(contentLength)!
+            
+            completionHandler(.allow)
+        } else {
+            completionHandler(.cancel)
+        }
     }
     
     //2. 서버에서 데이터를 받아올 때마다 반복적으로 호출 (data)
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         print("2222", data)
+        buffer.append(data)
+        
+        let result = Double(buffer.count) / total
+        navigationItem.title = "\(result * 100)% / 100%"
     }
     
     //3. 오류가 발생했거나 응답이 완료가 될 때 호출 (100% 시점)
+    //이미지뷰에 이미지를 띄우는 코드 등과 같은 코드를 작성
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: (any Error)?) {
         print("3333", error)
+        print(buffer)
+        
+        imageView.image = UIImage(data: buffer)
     }
     
 }
