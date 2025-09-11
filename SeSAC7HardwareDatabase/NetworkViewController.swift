@@ -18,8 +18,46 @@ class NetworkViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        callRequest()
+        callLotto()
         
+    }
+    
+    func callLotto() {
+        let url = URL(string: "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=1150")!
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard error == nil else {
+                print("Failed Request")
+                return
+            }
+            
+            guard let data = data else {
+                print("No Data Returned")
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("Unable Response")
+                return
+            }
+            
+            guard response.statusCode == 200 else {
+                print("Status Code Error")
+                return
+            }
+            
+            print("이제 디코딩 가능한 상태")
+            
+            do {
+                let result = try JSONDecoder().decode(Lotto.self, from: data)
+                print("success", result)
+            } catch {
+                print("error")
+            }
+            
+            
+        }.resume()
     }
     
     func callRequest() {
