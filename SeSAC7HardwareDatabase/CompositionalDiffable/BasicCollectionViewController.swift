@@ -8,7 +8,9 @@
 import UIKit
 import SnapKit
 
-struct Basic: Hashable {
+//Identifiable: id 프로퍼티 사용해라
+struct Basic: Hashable, Identifiable {
+    let id = UUID()
     let name: String
     let age: Int
 }
@@ -30,7 +32,7 @@ class BasicCollectionViewController: UIViewController {
     private var registration: UICollectionView.CellRegistration<UICollectionViewListCell, Basic>!
     
     //Hashable한데 데이터가 같으면 어떻게 보일지 테스트 필요함
-    let list = [
+    var list = [
         Basic(name: "Jack", age: 123),
         Basic(name: "Den", age: 13),
         Basic(name: "Finn", age: 1234),
@@ -52,6 +54,9 @@ class BasicCollectionViewController: UIViewController {
         snapshot.appendItems(list, toSection: .caption)
         snapshot.appendItems([Basic(name: "새싹", age: 10), Basic(name: "as", age: 123)], toSection: .main)
         snapshot.appendItems([Basic(name: "asdasd", age: 11)], toSection: .sub)
+        
+        // 중복된 모델은 알아서 고유값을 가지도록 병합됨
+        snapshot.appendItems([Basic(name: "새싹", age: 10)], toSection: .main)
         
         dataSource.apply(snapshot)
     }
@@ -90,6 +95,29 @@ class BasicCollectionViewController: UIViewController {
     }
 }
 
+extension BasicCollectionViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //diffable -> index 기반 조회는 되긴 하지만 맞는 접근 아님.
+        //print(indexPath)
+        //print(list[indexPath.item])
+        
+        let item = dataSource.itemIdentifier(for: indexPath)
+        print(item)
+    }
+    
+}
+
+extension BasicCollectionViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let data = Basic(name: searchBar.text!, age: .random(in: 1...100))
+        list.insert(data, at: .random(in: 0...3))
+        updateSnapshot()
+    }
+    
+}
     //1. Custom Cell + register + identifier
     //2. System Cell + Cell Resgistration + X
 
@@ -100,8 +128,9 @@ extension BasicCollectionViewController {
          
         searchBar.placeholder = "검색어를 입력하세요"
         searchBar.searchBarStyle = .minimal
+        searchBar.delegate = self
         view.addSubview(searchBar)
-         
+        collectionView.delegate = self
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
     }
