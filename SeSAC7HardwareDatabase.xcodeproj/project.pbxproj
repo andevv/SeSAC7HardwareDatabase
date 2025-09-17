@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE9F5C0A2E6FB41200DCB1BD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FE9F5C092E6FB41200DCB1BD /* SnapKit */; };
+		FEEE2F982E7A4C7400AA8180 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FEEE2F972E7A4C7400AA8180 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEEE2F982E7A4C7400AA8180 /* RealmSwift in Frameworks */,
 				FE9F5C0A2E6FB41200DCB1BD /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = SeSAC7HardwareDatabase;
 			packageProductDependencies = (
 				FE9F5C092E6FB41200DCB1BD /* SnapKit */,
+				FEEE2F972E7A4C7400AA8180 /* RealmSwift */,
 			);
 			productName = SeSAC7HardwareDatabase;
 			productReference = FE6BADAF2E6E5F9000EE2E65 /* SeSAC7HardwareDatabase.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FE9F5C082E6FB41200DCB1BD /* XCRemoteSwiftPackageReference "SnapKit" */,
+				FEEE2F962E7A4C7400AA8180 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FE6BADB02E6E5F9000EE2E65 /* Products */;
@@ -360,6 +364,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		FEEE2F962E7A4C7400AA8180 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 20.0.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -367,6 +379,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FE9F5C082E6FB41200DCB1BD /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		FEEE2F972E7A4C7400AA8180 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FEEE2F962E7A4C7400AA8180 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

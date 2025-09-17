@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+/*
+ 로컬 데이터 저장: UserDefaults vs Database(Realm, CoreData, SwiftData)
+ */
+
 //Identifiable: id 프로퍼티 사용해라
 struct Basic: Hashable, Identifiable {
     let id = UUID()
