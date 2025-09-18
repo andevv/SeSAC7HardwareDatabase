@@ -116,7 +116,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         do {
             try realm.write {
-                realm.delete(data)
+                realm.create(MoneyTable.self, value: ["id": data.id, "money": 1], update: .modified)
+                //realm.delete(data)
             }
         } catch {
             print("데이터 삭제 실패")
