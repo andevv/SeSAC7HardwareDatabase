@@ -74,7 +74,7 @@ class AddViewController: UIViewController {
                                   money: Int.random(in: 100...5000) * 100,
                                   useDate: Date(),
                                   category: category,
-                                  memo: nil)
+                                  memo: memoField.text!)
             
             //Realm 위치 찾고
             //Realm 테이블에 레코드 추가

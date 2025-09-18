@@ -18,7 +18,7 @@ class MoneyTable: Object {
     
     @Persisted var title: String?
     @Persisted var place: String?
-    @Persisted var memo: String?
+    @Persisted(indexed: true) var memo: String?
     @Persisted var card: Bool? //카드 true, 현금 false
     
     convenience init(type: Bool, money: Int, useDate: Date, category: Int, place: String? = nil, memo: String? = nil, card: Bool? = nil) {

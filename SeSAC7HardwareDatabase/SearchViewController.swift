@@ -14,7 +14,9 @@ class SearchViewController: UIViewController {
     let tableView = UITableView()
     let searchBar = UISearchBar()
     
-    var list: [String] = []
+    let realm = try! Realm()
+    
+    var list: Results<MoneyTable>!
       
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,12 +25,13 @@ class SearchViewController: UIViewController {
         configureView()
         configureConstraints()
         
-        list = ["A", "B", "C", "D"]
+        list = realm.objects(MoneyTable.self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
+        tableView.reloadData()
     }
     
     private func configureHierarchy() {
@@ -38,6 +41,8 @@ class SearchViewController: UIViewController {
     
     private func configureView() {
         view.backgroundColor = .white
+        
+        searchBar.delegate = self
         
         tableView.rowHeight = 130
         tableView.delegate = self
@@ -59,6 +64,17 @@ class SearchViewController: UIViewController {
     } 
 }
 
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let data = realm.objects(MoneyTable.self).where {
+            $0.memo.contains(searchText, options: .caseInsensitive)
+        }.sorted(byKeyPath: "money", ascending: false)
+        
+        list = data
+        tableView.reloadData()
+    }
+}
+
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,7 +85,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.id) as! ListTableViewCell
          
-        cell.testUI()
+        let row = list[indexPath.row]
+        cell.titleLabel.text = row.memo
+        cell.subTitleLabel.text = row.money.formatted()
         
         return cell
     }
