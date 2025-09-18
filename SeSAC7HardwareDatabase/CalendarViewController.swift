@@ -17,6 +17,9 @@ class CalendarViewController: UIViewController {
     //1. default.realm 조회
     let realm = try! Realm()
     
+    
+    //Results는 클래스 기반 -> 디퍼블 문제 생김
+    //[MoneyTable] 구조체 기반 -> 디퍼블 사용 가능
     var list: Results<MoneyTable>!
       
     override func viewDidLoad() {
@@ -27,7 +30,9 @@ class CalendarViewController: UIViewController {
         configureConstraints()
         
         print(realm.configuration.fileURL)
-        let data = realm.objects(MoneyTable.self)
+        let data = realm.objects(MoneyTable.self).where({
+            $0.category == 1
+        }).sorted(byKeyPath: "money", ascending: false)
         list = data
     }
     

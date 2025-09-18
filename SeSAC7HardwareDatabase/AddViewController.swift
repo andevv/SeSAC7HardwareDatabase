@@ -70,11 +70,11 @@ class AddViewController: UIViewController {
             }
             
             //레코드 만들고
-            let data = MoneyTable(type: false,
+            let data = MoneyTable(type: true,
                                   money: Int.random(in: 100...5000) * 100,
                                   useDate: Date(),
                                   category: category,
-                                  memo: "메모를 작성했어요")
+                                  memo: nil)
             
             //Realm 위치 찾고
             //Realm 테이블에 레코드 추가
