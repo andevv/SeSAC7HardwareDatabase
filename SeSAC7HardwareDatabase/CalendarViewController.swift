@@ -106,6 +106,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         cell.titleLabel.text = data.money.formatted() + "원"
         cell.subTitleLabel.text = data.type ? "수입" : "지출"
         cell.overviewLabel.text = data.memo
+        cell.thumbnailImageView.image = loadImageToDocument(filename: "\(data.id)")
         
         return cell
     }

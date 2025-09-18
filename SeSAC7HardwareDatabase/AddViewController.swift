@@ -76,6 +76,10 @@ class AddViewController: UIViewController {
                                   category: category,
                                   memo: memoField.text!)
             
+            if let image = photoImageView.image {
+                saveImageToDocument(image: image, filename: "\(data.id)")
+            }
+            
             //Realm 위치 찾고
             //Realm 테이블에 레코드 추가
             do {
