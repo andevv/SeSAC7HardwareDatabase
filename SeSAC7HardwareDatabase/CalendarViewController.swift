@@ -115,10 +115,12 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         let data = list[indexPath.row]
         
+        removeImageFromDocument(filename: "\(data.id)")
+        
         do {
             try realm.write {
-                realm.create(MoneyTable.self, value: ["id": data.id, "money": 1], update: .modified)
-                //realm.delete(data)
+//                realm.create(MoneyTable.self, value: ["id": data.id, "money": 1], update: .modified)
+                realm.delete(data)
             }
         } catch {
             print("데이터 삭제 실패")
