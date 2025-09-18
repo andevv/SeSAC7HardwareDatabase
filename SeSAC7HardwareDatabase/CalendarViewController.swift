@@ -112,6 +112,19 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let data = list[indexPath.row]
+        
+        do {
+            try realm.write {
+                realm.delete(data)
+            }
+        } catch {
+            print("데이터 삭제 실패")
+        }
+        
+        list = realm.objects(MoneyTable.self)
+        tableView.reloadData()
+        
     }
       
     
