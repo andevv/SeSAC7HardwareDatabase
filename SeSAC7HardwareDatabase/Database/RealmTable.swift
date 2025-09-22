@@ -14,11 +14,26 @@ class MoneyFolder: Object {
     @Persisted var name: String
     @Persisted var regdate: Date
     
+    @Persisted var detail: List<Account> //폴더 테이블 안에 account 테이블이 들어 있는 구조
+    
     convenience init(name: String) {
         self.init()
         
         self.name = name
         self.regdate = Date()
+    }
+}
+
+class Account: Object {
+    @Persisted(primaryKey: true) var id: ObjectId
+    
+    @Persisted var money: Int
+    @Persisted var title: String
+    
+    convenience init(title: String) {
+        self.init()
+        self.money = Int.random(in: 1...1000) * 100
+        self.title = title
     }
 }
 

@@ -10,6 +10,8 @@ import SnapKit
 import RealmSwift
 
 class SearchViewController: UIViewController {
+    
+    var account: List<Account>!
  
     let tableView = UITableView()
     let searchBar = UISearchBar()
@@ -78,15 +80,15 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list.count
+        return account.count
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.id) as! ListTableViewCell
          
-        let row = list[indexPath.row]
-        cell.titleLabel.text = row.memo
+        let row = account[indexPath.row]
+        cell.titleLabel.text = row.title
         cell.subTitleLabel.text = row.money.formatted()
         
         return cell

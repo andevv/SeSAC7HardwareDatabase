@@ -27,7 +27,38 @@ class FolderViewController: UIViewController {
 //        createFolder(name: "동아리")
 //        createFolder(name: "가족")
         
+//        createAccount(title: "청년절망적금 시즌2")
+//        createAccount(title: "전세")
+//        createAccount(title: "통신비")
+        
         list = realm.objects(MoneyFolder.self)
+        dump(list)
+    }
+    
+    func createAccount(title: String) {
+        let account = Account(title: title)
+        
+        let folder = realm.objects(MoneyFolder.self).where {
+            $0.name == "개인"
+        }.first
+        
+        do {
+            try realm.write {
+                folder?.detail.append(account)
+            }
+        } catch {
+            print("realm 데이터에 저장 실패")
+        }
+        
+//        let account = Account(title: title)
+//        
+//        do {
+//            try realm.write {
+//                realm.add(account)
+//            }
+//        } catch {
+//            print("account 테이블에 저장 실패")
+//        }
     }
     
     func createFolder(name: String) {
@@ -76,13 +107,20 @@ extension FolderViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.id, for: indexPath) as! ListTableViewCell
         let data = list[indexPath.row]
         cell.titleLabel.text = data.name
+        cell.subTitleLabel.text = "\(data.detail.count)"
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = CalendarViewController()
+        
+        let vc = SearchViewController()
         let data = list[indexPath.row]
-        vc.folder = data
+        vc.account = data.detail
+        
         navigationController?.pushViewController(vc, animated: true)
+//        let vc = CalendarViewController()
+//        let data = list[indexPath.row]
+//        vc.folder = data
+//        navigationController?.pushViewController(vc, animated: true)
     }
 }
