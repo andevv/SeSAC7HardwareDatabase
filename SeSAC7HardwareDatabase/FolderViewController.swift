@@ -113,11 +113,22 @@ extension FolderViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let vc = SearchViewController()
         let data = list[indexPath.row]
-        vc.account = data.detail
         
-        navigationController?.pushViewController(vc, animated: true)
+        do {
+            try realm.write {
+                realm.delete(data.detail)
+                realm.delete(data)
+            }
+        } catch {
+            print("삭제 실패")
+        }
+        
+//        let vc = SearchViewController()
+//        let data = list[indexPath.row]
+//        vc.account = data.detail
+        
+//        navigationController?.pushViewController(vc, animated: true)
 //        let vc = CalendarViewController()
 //        let data = list[indexPath.row]
 //        vc.folder = data
