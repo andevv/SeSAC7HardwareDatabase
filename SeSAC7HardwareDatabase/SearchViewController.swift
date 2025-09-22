@@ -18,7 +18,7 @@ class SearchViewController: UIViewController {
     
     let realm = try! Realm()
     
-    var list: Results<MoneyTable>!
+    var list: Results<Account>! //Realm List와 상관없이 레코드 전체를 조회
       
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,7 @@ class SearchViewController: UIViewController {
         configureView()
         configureConstraints()
         
-        list = realm.objects(MoneyTable.self)
+        list = realm.objects(Account.self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,29 +67,31 @@ class SearchViewController: UIViewController {
 }
 
 extension SearchViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let data = realm.objects(MoneyTable.self).where {
-            $0.memo.contains(searchText, options: .caseInsensitive)
-        }.sorted(byKeyPath: "money", ascending: false)
-        
-        list = data
-        tableView.reloadData()
-    }
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        let data = realm.objects(MoneyTable.self).where {
+//            $0.memo.contains(searchText, options: .caseInsensitive)
+//        }.sorted(byKeyPath: "money", ascending: false)
+//        
+//        list = data
+//        tableView.reloadData()
+//    }
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return account.count
+        return list.count //account.count
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.id) as! ListTableViewCell
          
-        let row = account[indexPath.row]
+        let row = list[indexPath.row] //account[indexPath.row]
         cell.titleLabel.text = row.title
         cell.subTitleLabel.text = row.money.formatted()
+        
+        cell.overviewLabel.text = row.folder.first?.name ?? "폴더 없음"
         
         return cell
     }

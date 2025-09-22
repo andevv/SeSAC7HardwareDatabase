@@ -30,6 +30,10 @@ class Account: Object {
     @Persisted var money: Int
     @Persisted var title: String
     
+    //Inverse Relationship
+    @Persisted(originProperty: "detail")
+    var folder: LinkingObjects<MoneyFolder>
+    
     convenience init(title: String) {
         self.init()
         self.money = Int.random(in: 1...1000) * 100
