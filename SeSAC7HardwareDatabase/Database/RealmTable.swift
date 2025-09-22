@@ -8,8 +8,24 @@
 import Foundation
 import RealmSwift
 
+class MoneyFolder: Object {
+    @Persisted(primaryKey: true) var id: ObjectId
+    
+    @Persisted var name: String
+    @Persisted var regdate: Date
+    
+    convenience init(name: String) {
+        self.init()
+        
+        self.name = name
+        self.regdate = Date()
+    }
+}
+
 class MoneyTable: Object {
     @Persisted(primaryKey: true) var id: ObjectId
+    
+    @Persisted var folder: ObjectId //어떤 폴더인지
     
     @Persisted var type: Bool
     @Persisted var money: Int

@@ -10,6 +10,8 @@ import SnapKit
 import RealmSwift
 
 class CalendarViewController: UIViewController {
+    
+    var folder: MoneyFolder? //
  
     let tableView = UITableView()
     let calendar = UIView()
@@ -28,17 +30,19 @@ class CalendarViewController: UIViewController {
         configureHierarchy()
         configureView()
         configureConstraints()
+        navigationItem.title = folder?.name
         
         print(realm.configuration.fileURL)
-        let data = realm.objects(MoneyTable.self).where({
-            $0.category == 1
-        }).sorted(byKeyPath: "money", ascending: false)
-        list = data
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
+        let data = realm.objects(MoneyTable.self).where({
+            $0.folder == folder!.id
+        }).sorted(byKeyPath: "money", ascending: false)
+        list = data
         tableView.reloadData()
     }
     

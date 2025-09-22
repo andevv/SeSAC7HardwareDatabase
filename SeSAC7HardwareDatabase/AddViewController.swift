@@ -76,6 +76,13 @@ class AddViewController: UIViewController {
                                   category: category,
                                   memo: memoField.text!)
             
+            //가계부 내용을 폴더와 연결
+            let folder = realm.objects(MoneyFolder.self).where {
+                $0.name == "개인"
+            }.first!
+            
+            data.folder = folder.id
+            
             if let image = photoImageView.image {
                 saveImageToDocument(image: image, filename: "\(data.id)")
             }
