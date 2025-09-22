@@ -16,12 +16,22 @@ class MoneyFolder: Object {
     
     @Persisted var detail: List<Account> //폴더 테이블 안에 account 테이블이 들어 있는 구조
     
+    @Persisted var memo: Memo? //항상 옵셔널 선언. Memo 테이블이 생기지는 않음.
+    
     convenience init(name: String) {
         self.init()
         
         self.name = name
         self.regdate = Date()
     }
+}
+
+//To-One Realationship
+class Memo: EmbeddedObject {
+    @Persisted var memoContents: String
+    @Persisted var memoMusic: String
+    @Persisted var regDate: Date
+    @Persisted var editDate: Date
 }
 
 class Account: Object {

@@ -31,8 +31,30 @@ class FolderViewController: UIViewController {
 //        createAccount(title: "전세")
 //        createAccount(title: "통신비")
         
+//        createMemo()
+        
         list = realm.objects(MoneyFolder.self)
         dump(list)
+    }
+    
+    func createMemo() {
+        let folder = realm.objects(MoneyFolder.self).where {
+            $0.name == "동아리"
+        }.first!
+        
+        let memo = Memo()
+        memo.editDate = Date()
+        memo.regDate = Date()
+        memo.memoContents = "2025년 상반기에 참여한 동아리"
+        memo.memoMusic = "NCT, 스트레이키즈"
+        
+        do {
+            try realm.write {
+                folder.memo = memo
+            }
+        } catch {
+            print("실패")
+        }
     }
     
     func createAccount(title: String) {
@@ -108,21 +130,22 @@ extension FolderViewController: UITableViewDelegate, UITableViewDataSource {
         let data = list[indexPath.row]
         cell.titleLabel.text = data.name
         cell.subTitleLabel.text = "\(data.detail.count)"
+        cell.overviewLabel.text = data.memo?.memoContents
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let data = list[indexPath.row]
-        
-        do {
-            try realm.write {
-                realm.delete(data.detail)
-                realm.delete(data)
-            }
-        } catch {
-            print("삭제 실패")
-        }
+//        let data = list[indexPath.row]
+//        
+//        do {
+//            try realm.write {
+//                realm.delete(data.detail)
+//                realm.delete(data)
+//            }
+//        } catch {
+//            print("삭제 실패")
+//        }
         
 //        let vc = SearchViewController()
 //        let data = list[indexPath.row]
