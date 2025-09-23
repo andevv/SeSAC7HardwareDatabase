@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func migration() {
         
+        //deleteRealmIfMigrationNeeded -> true: 앱 재설치하는 것과 동일한 기능, 릴리즈에서는 쓰면 안됨.
         let config = Realm.Configuration(schemaVersion: 3) { migration,
             oldSchemaVersion in
             
@@ -49,6 +50,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     oldObject, newObject in
                     guard let newObject = newObject else { return }
                     newObject["favorite"] = false
+                }
+            }
+            
+            //emotion 컬럼 추가, name 글자수를 emotion에 반영
+            if oldSchemaVersion < 4 {
+                migration.enumerateObjects(ofType: Diary.className()) { oldObject, newObject in
+                    guard let oldObject = oldObject else { return }
+                    guard let newObject = newObject else { return }
+                    
+                    if let a = oldObject["name"] as? String {
+                        newObject["emotion"] = Double(a.count)
+                    } else {
+                        newObject["emotion"] = 0.0
+                    }
+                    
+                    
                 }
             }
             

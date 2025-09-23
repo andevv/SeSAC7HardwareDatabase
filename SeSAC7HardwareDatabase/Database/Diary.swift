@@ -13,12 +13,14 @@ class Diary: Object {
     @Persisted var name: String
     @Persisted var memo: String
     @Persisted var favorite: Bool
+    @Persisted var emotion: Double
     
     convenience init(name: String, content: String) {
         self.init()
         self.name = name
         self.memo = content
         self.favorite = false
+        self.emotion = 0
     }
 }
 
