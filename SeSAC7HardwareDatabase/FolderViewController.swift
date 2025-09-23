@@ -33,8 +33,26 @@ class FolderViewController: UIViewController {
         
 //        createMemo()
         
+        for i in 1...100 {
+            createDiary()
+        }
+        
         list = realm.objects(MoneyFolder.self)
         dump(list)
+        
+        print(realm.configuration.fileURL)
+    }
+    
+    func createDiary() {
+        let diary = Diary(name: "일기 제목 \(Int.random(in: 1...100))", content: "일기 내용 \(Int.random(in: 1...100))")
+        
+        do {
+            try realm.write {
+                realm.add(diary)
+            }
+        } catch {
+            print(error)
+        }
     }
     
     func createMemo() {
